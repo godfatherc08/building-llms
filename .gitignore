@@ -5,3 +5,5 @@ __pycache__/
 .idea/
 baseline/the-verdict.txt
 .tiktoken_cache/
+.claude
+docs/place-value-novel-architecture.MD
