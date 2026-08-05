@@ -50,7 +50,6 @@ class SSelf_Attention():
 
 
 
-from Attention.baseline import SSelf_Attention
 
 class BatchSSelfAttention(SSelf_Attention):
     def __init__(self, input_string:str):

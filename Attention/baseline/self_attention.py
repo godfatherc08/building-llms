@@ -20,17 +20,23 @@ class SelfAttention(SSelf_Attention):
         # requiregrad will be true during training to allow tuning of weights
 
         query_i = x_i @ W_query
-        key_i = x_i @ W_key
-        value_i = x_i @ W_value
+        key_i = input_embeddings @ W_key
+        value_i = input_embeddings @ W_value
 
         return (query_i, key_i, value_i)
 
-    def attention_weights(self, key, query):
-        attention_scores = torch.dot(key, query)
-        attention_weights = torch.softmax(attention_scores, dim=-1)
+    def attention_weight(self, key, query):
+        attention_scores = query @ key.T
+        print(f"query: {query}")
+        print(f"key : {key}")
+        print(f"Attention score: {attention_scores}")
+        d_k = key.shape[-1]
+        attention_weights = torch.softmax(attention_scores / d_k ** 0.5, dim=-1)
         return attention_weights
 
     def context_vector(self, attention_weights, value):
+        print(f"Attention weights: {attention_weights}")
+        print(f"value: {value}")
         context_vector = attention_weights @ value
         return context_vector
 
@@ -39,7 +45,7 @@ class SelfAttention(SSelf_Attention):
 import torch
 
 from Attention.baseline import SSelf_Attention
-
+# not complete
 class BatchSelfAttention(SSelf_Attention):
     def __init__(self, input_string:str):
         super().__init__(input_string, query_input=0)
