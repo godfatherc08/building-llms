@@ -9,14 +9,14 @@ this directory for attribution and license.
 
 from __future__ import annotations
 
-from baseline.dataset import GPTDatasetV1, create_dataloader_v1
-from baseline.download import DEFAULT_CORPUS_PATH, download_verdict, load_verdict
-from baseline.embeddings import (
+from Tokenizers.baseline.dataset import GPTDatasetV1, create_dataloader_v1
+from Tokenizers.baseline.download import DEFAULT_CORPUS_PATH, download_verdict, load_verdict
+from Tokenizers.baseline.embeddings import (
     compute_input_embeddings,
     create_positional_embedding_layer,
     create_token_embedding_layer,
 )
-from baseline.tokenizers import (
+from Tokenizers.baseline.tokenizers import (
     SimpleTokenizerV1,
     SimpleTokenizerV2,
     build_vocab,

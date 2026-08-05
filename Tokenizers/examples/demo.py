@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import torch
 
-from baseline import (
+from Tokenizers.baseline import (
     SimpleTokenizerV1,
     SimpleTokenizerV2,
     build_vocab,
@@ -25,7 +25,7 @@ from baseline import (
     get_bpe_tokenizer,
     load_verdict,
 )
-from baseline.embeddings import DEFAULT_OUTPUT_DIM, GPT2_VOCAB_SIZE
+from Tokenizers.baseline.embeddings import DEFAULT_OUTPUT_DIM, GPT2_VOCAB_SIZE
 
 
 def demo_simple_tokenizers(raw_text: str) -> None:

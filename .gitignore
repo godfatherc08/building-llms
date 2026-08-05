@@ -3,7 +3,8 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .idea/
-baseline/the-verdict.txt
+Tokenizers/baseline/the-verdict.txt
 .tiktoken_cache/
 .claude
-docs/place-value-novel-architecture.MD
+Tokenizers/docs/place-value-novel-architecture.MD
+Tokenizers/tests
