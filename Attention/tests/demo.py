@@ -4,7 +4,8 @@ from Attention.baseline import (
     SSelf_Attention,
     BatchSSelfAttention,
     SelfAttention,
-    BatchSelfAttention
+    BatchSelfAttention,
+    CasualAttention
 )
 
 def test_SSelf_Attention():
@@ -40,9 +41,22 @@ def test_selfAttention():
     embeddings = attention.embed_tokens(tokenIDs)
     query, key, values = attention.QKV_init(embeddings)
     print(f"Query vector: {query}, Key Vector: {key}, Value Vector: {values}")
-    weights = attention.attention_weight(key, query)
+    attention_score = attention.attention_score(key, query)
+    weights = attention.attention_weight(attention_score, key)
     context_vector = attention.context_vector(weights,values)
     print(f"Context vector for batch procedure: {context_vector}")
+
+def testCausalAttention():
+    attention = CasualAttention("The forest is filled with dark and evil creatures", query_input=4)
+    tokenIDs = attention.tokenize()
+    embeddings = attention.embed_tokens(tokenIDs)
+    query, key, values = attention.QKV_init(embeddings)
+    print(f"Query vector: {query}, Key Vector: {key}, Value Vector: {values}")
+    attention_score = attention.attention_score(key, query)
+    attention_weight = attention.attention_weight(attention_score, key)
+    masking = attention.masking(key, attention_score, attention_weight)
+    return masking
+
 
 test_SSelf_Attention()
 print("=" * 80)
@@ -50,4 +64,7 @@ test_BatchSSelfAttention()
 print("=" * 80)
 test_selfAttention()
 print("=" * 80)
+testCausalAttention()
+print("=" * 80)
+
 

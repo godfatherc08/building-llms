@@ -25,11 +25,14 @@ class SelfAttention(SSelf_Attention):
 
         return (query_i, key_i, value_i)
 
-    def attention_weight(self, key, query):
-        attention_scores = query @ key.T
+    def attention_score(self, key, query):
         print(f"query: {query}")
         print(f"key : {key}")
+        attention_scores = query @ key.T
         print(f"Attention score: {attention_scores}")
+        return attention_scores
+
+    def attention_weight(self, attention_scores, key):
         d_k = key.shape[-1]
         attention_weights = torch.softmax(attention_scores / d_k ** 0.5, dim=-1)
         return attention_weights
@@ -41,8 +44,6 @@ class SelfAttention(SSelf_Attention):
         return context_vector
 
 
-
-import torch
 
 from Attention.baseline import SSelf_Attention
 # not complete
@@ -58,3 +59,31 @@ class BatchSelfAttention(SSelf_Attention):
     def context_vector(self, attention_weights, input_embeddings):
         context_vector = attention_weights @ input_embeddings
         return context_vector
+
+class CasualAttention(SelfAttention):
+    def __init__(self, input_string: str, query_input: int):
+        super().__init__(input_string, query_input)
+
+    def attention_score_mask(self, attention_score, mask):
+        attention_mask = attention_score.masked_fill(mask.bool(), -float('inf'))
+        print(f"Attention score: {attention_score}")
+        return attention_mask
+
+    def masking(self, key, attention_score, attention_weights):
+        context_length = attention_score.shape[0]
+        mask = torch.triu(torch.ones(context_length, context_length), diagonal=1)
+        masked = self.attention_score_mask(attention_score, mask)
+
+        mask_simple = torch.tril(torch.ones(context_length, context_length))
+        print(f"Mask simple: {mask_simple}")
+
+        masked_simple = attention_weights*mask_simple
+        print(f"Masked simple: {masked_simple}")
+
+        row_sums = masked_simple.sum(dim=1, keepdim=True)
+        masked_simple_normalized = masked_simple/row_sums
+        print(f"Masked simple normalized: {masked_simple_normalized}")
+
+        mask_attn_weights = torch.softmax(masked/key.shape[-1]**0.5, dim=-1)
+        print(f"Masked attention weights: {mask_attn_weights}")
+
