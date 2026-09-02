@@ -4,7 +4,7 @@ Unmodified upstream code from *Build a Large Language Model From Scratch*,
 Chapter 2 (Sebastian Raschka). Contains:
 
 * :func:`preprocess` -- the regex whitespace/punctuation split used to build a
-  word-level vocabulary.
+  word-level vocabulary
 * :func:`build_vocab` -- turns a corpus into a ``token -> id`` mapping (and,
   for the V2 variant, appends the ``<|endoftext|>`` and ``<|unk|>`` specials).
 * :class:`SimpleTokenizerV1` -- word-level tokenizer that raises ``KeyError``
